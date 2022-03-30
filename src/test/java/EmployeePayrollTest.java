@@ -16,6 +16,14 @@ public class EmployeePayrollTest {
 		Assert.assertEquals(3,employeePayRollList.size());
 	}
 	
-	
+	/**
+	 * In this test case given New Employee Salary Should Update With Database.
+	 */
+	@Test
+	public void givenNewEmployeeSalaryShouldUpdateWithDatabase() {
+		Employee_PayrollDBService employeePayRollDBService=new Employee_PayrollDBService();
+		employeePayRollDBService.updateEmployeeData("Terisa", 3000000.00);
+		Assert.assertTrue(true);
+	}
 	
 }

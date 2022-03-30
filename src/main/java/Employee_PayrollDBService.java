@@ -65,8 +65,8 @@ public class Employee_PayrollDBService {
 	}
 
 	/**
-	 * getEmployeePayrollData method
-	 * Function to get salary by name
+	 * getEmployeePayrollData method Function to get salary by name
+	 * 
 	 * @param name
 	 * @return employeePayrollDataList
 	 */
@@ -87,6 +87,7 @@ public class Employee_PayrollDBService {
 
 	/**
 	 * get employee data using result set
+	 * 
 	 * @param resultSet - list of columns for the table
 	 * @return
 	 */
@@ -106,6 +107,7 @@ public class Employee_PayrollDBService {
 		}
 		return employeePayrollDataList;
 	}
+
 	/**
 	 * get the employees data using prepared statement
 	 */
@@ -118,6 +120,26 @@ public class Employee_PayrollDBService {
 			e.printStackTrace();
 		}
 	}
-
 	
+	public int updateEmployeeData(String name, double basic_pay) {
+		return this.updateEmployeeDataUsingStatement(name, basic_pay);
+	}
+	/**
+	 * method to update employee salary by using name of the employee
+	 * @param name - name of the employee to update
+	 * @param basic_pay - salary of the employee which we need to change for particular employee
+	 * @return
+	 */
+	private int updateEmployeeDataUsingStatement(String name, double basic_pay) {
+		String sql = String.format("update employee_payroll_service set basic_pay = %.2f where name = '%s';", basic_pay,
+				name);
+		try (Connection connection = this.getConnection()) {
+			Statement statement = connection.createStatement();
+			return statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 }
