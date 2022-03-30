@@ -141,5 +141,59 @@ public class Employee_PayrollDBService {
 		}
 		return 0;
 	}
+	/**
+	 * 
+	 * @param startDate - start date for the given input
+	 * @param endDate - end date for the given input
+	 * @return
+	 */
+	public List<EmployeePayrollData> retrieveEmployyesForGivenDataRange(String startDate, String endDate) throws SQLException {
+		List<EmployeePayrollData> employeePayrollDataList = null;
+		try {
+		  if (this.employeePayrollDataStatement == null)
+              this.prepareStatementForRetrieveEmployeePayrollDateRange();
+          employeePayrollDataStatement.setString(1, startDate);
+          employeePayrollDataStatement.setString(2, endDate);
+          ResultSet resultSet;
+          resultSet = employeePayrollDataStatement.executeQuery();
+          employeePayrollDataList = this.retrieveEmployeePayrollDataRange(resultSet);
+      }catch (SQLException e) {
+          e.printStackTrace();
+      }
+      return employeePayrollDataList;
+	}
+
+	public List<EmployeePayrollData> retrieveEmployeePayrollDataRange(ResultSet resultSet) {
+		List<EmployeePayrollData> employeePayrollDataList = new ArrayList<>();
+        try {
+            while (resultSet.next()){
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                double basic_pay = resultSet.getDouble("basic_pay");
+                LocalDate startDate = resultSet.getDate("start").toLocalDate();
+                employeePayrollDataList.add(new EmployeePayrollData(id, name, basic_pay, startDate));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employeePayrollDataList;
+	}
+
+	public void prepareStatementForRetrieveEmployeePayrollDateRange() {
+		  Connection connection = null;
+	        try {
+	            connection = this.getConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        String sql = "SELECT * FROM employee_payroll_service WHERE start BETWEEN ? AND ?";
+	        try {
+	            assert connection != null;
+	            employeePayrollDataStatement = connection.prepareStatement(sql);
+	        } catch (SQLException throwable) {
+	            throwable.printStackTrace();
+	        }
+		
+	}
 
 }
