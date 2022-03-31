@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class EmployeePayrollTest {
 	@Test
 	public void givenNewEmployeeSalaryShouldUpdateWithDatabase() {
 		Employee_PayrollDBService employeePayRollDBService = new Employee_PayrollDBService();
-		employeePayRollDBService.updateEmployeeData("Terisa", 3000000.00);
+		employeePayRollDBService.updateEmployeeData("Terisa", 4000000.00);
 		Assert.assertTrue(true);
 	}
 
@@ -50,9 +51,9 @@ public class EmployeePayrollTest {
 	public void givenPayrollData_WhenAverageSalaryRetrieveByGender_ShouldReturnValue() {
 		Employee_PayrollDBService employeePayrollService = new Employee_PayrollDBService();
 		Map<String, Double> averageSalaryByGender = employeePayrollService.getAverageSalaryByGender();
-		// System.out.println(averageSalaryByGender);
+		//System.out.println(averageSalaryByGender);
 		Assert.assertTrue(
-				averageSalaryByGender.get("M").equals(2000000.0) && averageSalaryByGender.get("F").equals(3000000.0));
+				averageSalaryByGender.get("M").equals(2000000.0) && averageSalaryByGender.get("F").equals(4000000.0));
 	}
 
 	/**
@@ -62,9 +63,9 @@ public class EmployeePayrollTest {
 	public void givenPayrollData_WhenSumSalaryRetrieveByGender_ShouldReturnValue() {
 		Employee_PayrollDBService employeePayrollService = new Employee_PayrollDBService();
 		Map<String, Double> sumSalaryByGender = employeePayrollService.getSumSalaryByGender();
-		// System.out.println(sumSalaryByGender);
+		 System.out.println("Sum"+sumSalaryByGender);
 		Assert.assertTrue(
-				sumSalaryByGender.get("M").equals(4000000.0) && sumSalaryByGender.get("F").equals(3000000.00));
+				sumSalaryByGender.get("M").equals(4000000.0) && sumSalaryByGender.get("F").equals(4400000.00));
 	}
 
 	/**
@@ -98,7 +99,20 @@ public class EmployeePayrollTest {
 	public void givenPayrollData_WhenCountNameRetrieveByGender_ShouldReturnValue() {
 		Employee_PayrollDBService employeePayrollService = new Employee_PayrollDBService();
 		Map<String, Integer> countNameByGender = employeePayrollService.getCountNameByGender();
-		System.out.println(countNameByGender);
+		//System.out.println(countNameByGender);
 		Assert.assertTrue(countNameByGender.get("M").equals(2) && countNameByGender.get("F").equals(2));
 	}
+	/**
+	 * UC7
+     * tested whether new employee added or not
+     */
+    @Test
+    public void givenNewEmployee_whenAdded_ShouldSyncWithDB() {
+    	Employee_PayrollDBService employeePayrollService = new Employee_PayrollDBService();
+    	employeePayrollService.addEmployeeToPayroll("Mounika", "F", 400000.00, LocalDate.now());
+    	//boolean result = employeePayrollService.checkEmployeePayrollSyncWithDB("Mounika");
+    	//System.out.println(result);
+        //Assert.assertTrue(result);
+        
+    }
 }
